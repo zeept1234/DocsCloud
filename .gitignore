@@ -225,3 +225,8 @@ upload/*
 
 #Download
 download/*
+
+#Logo
+DocsCloud logo.png
+#Secrets
+client_secret_562137263301-g0f64fu8g2fj7as3oftre5vcrafh9al3.apps.googleusercontent.com.json

@@ -1,6 +1,5 @@
 
-import base64
-import json
+import base64, json
 from pathlib import Path
 
 def encode():
@@ -21,7 +20,3 @@ def decode():
     for file_num in range(file_count):
         with open(f"download/{name[file_num]}{suffix[file_num]}", "wb") as restored:
             restored.write(decoded_image)
-
-
-encode()
-decode()
