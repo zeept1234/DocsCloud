@@ -221,12 +221,21 @@ __marimo__/
 
 #Upload
 upload/*
-!cat.png
+!README.md
 
 #Download
 download/*
+!README.md
 
 #Logo
 DocsCloud logo.png
+
 #Secrets
 client_secret_562137263301-g0f64fu8g2fj7as3oftre5vcrafh9al3.apps.googleusercontent.com.json
+
+#Old versions
+old_copies/*
+
+#File properties
+file_properties/*
+!README.md
