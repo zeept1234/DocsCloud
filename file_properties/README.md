@@ -1,0 +1,1 @@
+This folder saves the name, stem and Base85 encoding (until transfered to google docs API) of the images. Do not modify the files in this folder.

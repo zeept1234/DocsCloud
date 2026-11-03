@@ -232,6 +232,8 @@ DocsCloud logo.png
 
 #Secrets
 client_secret_562137263301-g0f64fu8g2fj7as3oftre5vcrafh9al3.apps.googleusercontent.com.json
+credentials.json
+token.json
 
 #Old versions
 old_copies/*
@@ -239,3 +241,6 @@ old_copies/*
 #File properties
 file_properties/*
 !README.md
+
+#Testing
+test.py

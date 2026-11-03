@@ -1,0 +1,1 @@
+This folder is for the incoming files. Files in this folder (besides this README) are decrypted from base85 and appear as the original file.

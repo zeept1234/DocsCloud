@@ -1,0 +1,1 @@
+This folder is for the outgoing files. Files in this folder (besides this README) will be saved as Base85.
