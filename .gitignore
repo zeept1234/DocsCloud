@@ -244,3 +244,7 @@ file_properties/*
 
 #Testing
 test.py
+
+#Batch info
+batch/*
+!batch.json

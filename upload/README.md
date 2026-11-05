@@ -1,1 +1,1 @@
-This folder is for the outgoing files. Files in this folder (besides this README) will be saved as Base85.
+This folder is for the outgoing files. Files in this folder (besides this README) will be saved as Base85. Images with the same name in storage will overwrite each other when downloaded.
