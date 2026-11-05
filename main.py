@@ -1,34 +1,32 @@
-import base64, json
-from pathlib import Path
-from docs_functions import * #Add comment with functions
+from docs_functions import *
+from codec_functions import *
 
-def encode():
-    name = []
-    suffix = []
-    encoded_image = []
-    batch = get_batch()
-    for file in Path("upload").iterdir(): #Loops through everything in upload folder
-        if file.name == "README.md": #Skips README.md
-            continue
-        with open(file, "rb") as image: #Opens the file (being looped) as "image"
-            data_binary = image.read()
-            encoded_image = "hi"
-            suffix = file.suffix
-            name = file.stem
-            file_properties = {"encoded image": encoded_image, "suffix": suffix, "name": name, "batch": batch}
-            with open(f"file_properties/{name}{suffix}.json", "w") as properties: #Stores the stem, suffix and batch into a json
-                json.dump(file_properties, properties, indent=4)
+def get_user_choice():
+    user_choice = int(input("Choose action:\n1. Encode: Encodes the files in the 'upload/' folder to base85 and stores it in 'file_properties/' temporarily\n2. Upload: Sends the files from 'upload/' to Google Docs for cloud storage\n3. Download: Retrieves the file properties from Google Docs and stores it in 'file_properties/' temporarily\n4. Decode: Turns the files storing base85 in 'file_properties/' to the original files and puts them in 'downloads/'\nInput here --> "))
+    return user_choice
 
-def decode():
-    for file in Path("file_properties").iterdir(): 
-        if file.name == "README.md":
-            continue
-        with open(file) as properties:
-            file_properties = json.load(properties)
-        with open(f"download/{file_properties["name"]}{file_properties["suffix"]}", "wb") as restored:
-            decoded_image = base64.b85decode(file_properties["encoded image"])
-            restored.write(decoded_image)
-        file.unlink()
+def action():
+    service = auth()
+    user_choice = get_user_choice()
+    if user_choice == 1: #Encode
+        encode()
+        action()
+    elif user_choice == 2: #Upload
+        batch = get_batch()
+        document_id = get_document_id(batch)
+        upload(service, document_id)
+        action()
+    elif user_choice == 3: #Download
+        batch_max = get_batch()
+        batch = int(input(f"Select batch to download from batches 0 - {batch_max}: "))
+        download(service, batch)
+        action()
+    elif user_choice == 4: #Decode
+        decode()
+        action()
+    else:
+        print("Invalid selection")
+        action()
 
 if __name__ == "__main__":
-    pass
+    action()

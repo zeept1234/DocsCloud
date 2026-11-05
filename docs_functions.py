@@ -76,8 +76,10 @@ def upload(service, document_id):
                 json.dump(batch_dict, file, indent=4)
             document_id = create_doc(service, batch)
             send_to_doc(service, document_id, json_properties_string)
+            json_file.unlink()
         else: #Sends json to docs
-            send_to_doc(service, document_id, json_properties_string)    
+            send_to_doc(service, document_id, json_properties_string)  
+            json_file.unlink()
 
 def get_length(service, document_id): #Gets document length
     document = service.documents().get(
