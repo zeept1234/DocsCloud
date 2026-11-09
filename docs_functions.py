@@ -2,6 +2,9 @@ from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 import json
 from pathlib import Path
+import subprocess
+import sys
+from time import sleep
 
 def auth():
     creds = Credentials.from_authorized_user_file("token.json")
@@ -90,12 +93,15 @@ def get_length(service, document_id): #Gets document length
     return length
 
 def get_document_id(batch):
+    service = auth()
     for batch_json in Path("batch").iterdir():
         if batch_json.name == "batch.json":
             continue
         with open(batch_json) as file:
             json_batch = json.load(file)
             if batch == json_batch["batch"]:
+                if json_batch["document_id"] == None:
+                    create_doc(service, batch)
                 return json_batch["document_id"]
 
 def get_batch():
@@ -104,33 +110,67 @@ def get_batch():
         return batch["batch"]
 
 def download(service, batch):
-    document_id = get_document_id(batch)
-    if document_id is None:
-        print(f"No document found for batch {batch}.")
-        outcome = "No document found"
-        return outcome
-    
-    text = get_text(service, document_id).strip()
     decoder = json.JSONDecoder()
     position = 0
     count = 0
 
-    while position < len(text):
-        json_properties, position = decoder.raw_decode(text, position)
+    if batch == "all": 
+        for batch_all in Path("batch").iterdir():
+            position = 0
+            if batch_all.name == "batch.json":
+                continue
+            with open(batch_all, "r") as file:
+                document_id_dict = json.load(file)
+                document_id = document_id_dict["document_id"]
+                text = get_text(service, document_id).strip()
+            while position < len(text):
+                json_properties, position = decoder.raw_decode(text, position)
 
-        with open(f"file_properties/{json_properties['name']}{json_properties["suffix"]}.json", "w") as file:
-            json.dump(json_properties, file, indent=4)
-        count = count + 1
+                with open(f"file_properties/{json_properties['name']}{json_properties['suffix']}.json", "w") as file:
+                    json.dump(json_properties, file, indent=4)
+                count = count + 1
 
-        while position < len(text) and text[position].isspace():
-            position = position + 1
+                while position < len(text) and text[position].isspace():
+                    position = position + 1
 
-    if count > 1:
+    elif isinstance(batch, int):
+        document_id = get_document_id(batch)
+        if document_id is None:
+            print(f"No document found for batch {batch}.")
+            outcome = "No document found"
+            return outcome
+        text = get_text(service, document_id).strip()
+        while position < len(text):
+            json_properties, position = decoder.raw_decode(text, position)
+
+            with open(f"file_properties/{json_properties['name']}{json_properties['suffix']}.json", "w") as file:
+                json.dump(json_properties, file, indent=4)
+            count = count + 1
+
+            while position < len(text) and text[position].isspace():
+                position = position + 1
+
+    else:
+        max_batch = get_batch()
+        output = print(f"Batch must be number 0 - {max_batch} or 'all'")
+        return output
+
+    if count != 1:
         s = "s"
-    elif count < 1:
-        s = " "
-    outcome = f"Successfully downloaded {count} file{s}."
-    return outcome
+    else:
+        s = ""
+    return s, count
+
+def clear():
+    subprocess.run("cls", shell=True)
+
+def kill():
+    sleep(1)
+    clear()
+    sleep(0.1)
+    sys.exit()
+    
+
 
 if __name__ == "__main__":
     pass

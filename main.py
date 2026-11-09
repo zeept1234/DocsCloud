@@ -1,32 +1,60 @@
-from docs_functions import *
+from docs_functions import * #ADD " - " to tooltip_functions redefine
 from codec_functions import *
+from tooltip_functions import *
+import keyboard
+from rich.console import Console
+from rich.live import Live
+from rich.spinner import Spinner
+from rich import print
+from time import sleep
 
 def get_user_choice():
-    user_choice = int(input("Choose action:\n1. Encode: Encodes the files in the 'upload/' folder to base85 and stores it in 'file_properties/' temporarily\n2. Upload: Sends the files from 'upload/' to Google Docs for cloud storage\n3. Download: Retrieves the file properties from Google Docs and stores it in 'file_properties/' temporarily\n4. Decode: Turns the files storing base85 in 'file_properties/' to the original files and puts them in 'downloads/'\nInput here --> "))
-    return user_choice
+    tooltip_1 = get_tooltip(1)
+    tooltip_2 = get_tooltip(2)
+    tooltip_4 = get_tooltip(4)
+    print(f"[cyan]Choose action:\n1. Upload{tooltip_1}\n2. Download{tooltip_2}\n3. Exit program\n{tooltip_4}Press number to perform action.")
 
 def action():
-    service = auth()
-    user_choice = get_user_choice()
-    if user_choice == 1: #Encode
-        encode()
-        action()
-    elif user_choice == 2: #Upload
-        batch = get_batch()
-        document_id = get_document_id(batch)
-        upload(service, document_id)
-        action()
-    elif user_choice == 3: #Download
-        batch_max = get_batch()
-        batch = int(input(f"Select batch to download from batches 0 - {batch_max}: "))
-        download(service, batch)
-        action()
-    elif user_choice == 4: #Decode
-        decode()
-        action()
-    else:
-        print("Invalid selection")
-        action()
+    console = Console()
+    upload_spinner = Spinner("dots", text="[bold green]Uploading...")
+    download_spinner = Spinner("dots", text="[bold green]Downloading...")
+    exit_spinner = Spinner("dots", text="[bold red]Exiting...")
+    clear()
+    get_user_choice()
+    tooltip = get_tooltip(4)
+    while True:
+        keyboard.block_key("1")
+        keyboard.block_key("2")
+        keyboard.block_key("3")
+        keyboard.block_key("4")
+        if keyboard.is_pressed("1"):
+            keyboard.unhook_all()
+            with Live(upload_spinner, refresh_per_second=10):
+                encode_upload()
+            clear()
+            with Live("[bold blue]Finished uploading!", console=console, refresh_per_second=10):
+                sleep(2)
+            action()
+        elif keyboard.is_pressed("2"):
+            keyboard.unhook_all()
+            batch = download_get_batch()
+            with Live(download_spinner, refresh_per_second=10):
+                finish_download = download_decode(batch)
+            clear()
+            with Live(f"[bold blue]{finish_download}", console=console, refresh_per_second=10):
+                sleep(2)
+            action()
+        elif keyboard.is_pressed("3") or keyboard.is_pressed("esc"):
+            clear()
+            with Live(exit_spinner, refresh_per_second=10, transient=True):
+                kill()
+                
+        elif keyboard.is_pressed("4") and tooltip != "":
+            keyboard.unhook_all
+            get_tooltip("hide")
+            clear()
+            action()
+        sleep(0.01)
 
 if __name__ == "__main__":
     action()

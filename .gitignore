@@ -248,3 +248,6 @@ test.py
 #Batch info
 batch/*
 !batch.json
+
+#.vscode
+.vscode/*
