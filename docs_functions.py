@@ -101,7 +101,8 @@ def get_document_id(batch):
             json_batch = json.load(file)
             if batch == json_batch["batch"]:
                 if json_batch["document_id"] == None:
-                    create_doc(service, batch)
+                    document_id = create_doc(service, batch)
+                    return document_id
                 return json_batch["document_id"]
 
 def get_batch():
