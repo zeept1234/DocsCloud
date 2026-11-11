@@ -5,9 +5,7 @@ DocsCloud is a tool used to store images, audio, video or really any file in goo
 DocsCloud utilises Google Docs as cloud storage, through encoding files into base85. Then, using Google Docs API, the files are sent in a json format to a document. This document's ID is saved, and can be accessed in the future.
 
 
-
 ## Getting Started
-
 ### Installation
 1. DocsCloud can be installed through one of two methods:
     -  Go to "https://github.com/zeept1234/DocsCloud", click releases, and install the zip file. Unzip the file and move the folder to a directory of your choice (e.g. C:/documents/DocsCloud). 
