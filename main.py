@@ -45,6 +45,7 @@ def action():
                 sleep(2)
             action()
         elif keyboard.is_pressed("3") or keyboard.is_pressed("esc"):
+            keyboard.unhook_all()
             clear()
             with Live(exit_spinner, refresh_per_second=10, transient=True):
                 kill()
