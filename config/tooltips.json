@@ -1,5 +1,5 @@
 {
-    "tooltip_1": " - Encodes the files in the \"upload/\" folder to base85, then uploads it to google docs.",
-    "tooltip_2": " - Downloads the base85 from google docs, decodes it, then puts it in the \"download/\" folder.",
-    "tooltip_4": "4. Do not show tooltips again.\n"
+    "tooltip_1": "",
+    "tooltip_2": "",
+    "tooltip_4": ""
 }

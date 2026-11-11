@@ -2,6 +2,8 @@ import base64, json
 from pathlib import Path
 from docs_functions import *
 import time
+from rich import print
+from rich.console import Console
 
 def encode():
     batch = get_batch()
@@ -42,7 +44,10 @@ def download_decode(batch):
     clear()
     service = auth()
     if batch != "all":
-        batch = int(batch)
+        try:
+            batch = int(batch)
+        except ValueError:
+            return "fail"
     s, count = download(service, batch)
     decode()
     time.sleep(2)
@@ -50,8 +55,9 @@ def download_decode(batch):
 
 def download_get_batch():
     clear()
+    console = Console()
     batch_max = get_batch()
-    batch = input(f"Select batch to download from batches 0 - {batch_max} or 'all': ")
+    batch = console.input(f"[cyan]Select batch to download from batches 0 - {batch_max} or 'all': ")
     return batch
 
 

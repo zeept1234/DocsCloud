@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 import sys
 from time import sleep
+from rich import print
 
 def auth():
     creds = Credentials.from_authorized_user_file("token.json")
@@ -153,7 +154,7 @@ def download(service, batch):
 
     else:
         max_batch = get_batch()
-        output = print(f"Batch must be number 0 - {max_batch} or 'all'")
+        output = print(f"[red]Batch must be number 0 - {max_batch} or 'all'")
         return output
 
     if count != 1:
@@ -161,17 +162,6 @@ def download(service, batch):
     else:
         s = ""
     return s, count
-
-def clear():
-    subprocess.run("cls", shell=True)
-
-def kill():
-    sleep(1)
-    clear()
-    sleep(0.1)
-    sys.exit()
-    
-
 
 if __name__ == "__main__":
     pass
