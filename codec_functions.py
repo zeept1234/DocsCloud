@@ -1,16 +1,17 @@
 import base64, json
 from pathlib import Path
 from docs_functions import *
+from utils import *
 import time
 from rich import print
 from rich.console import Console
 
 def encode():
     batch = get_batch()
-    for file in Path("upload").iterdir(): #Loops through everything in upload folder
-        if file.name == "README.md": #Skips README.md
+    for file in Path("upload").iterdir(): 
+        if file.name == "README.md": 
             continue
-        with open(file, "rb") as image: #Opens the file (being looped) as "image"
+        with open(file, "rb") as image: 
             data_binary = image.read()
             encoded_image = base64.b85encode(data_binary).decode()
             suffix = file.suffix
@@ -47,8 +48,10 @@ def download_decode(batch):
         try:
             batch = int(batch)
         except ValueError:
-            return "fail"
+            return "Fail"
     s, count = download(service, batch)
+    if s == "Fail":
+        return "Fail"
     decode()
     time.sleep(2)
     return f"Successfully downloaded {count} file{s}."

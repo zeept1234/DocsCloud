@@ -2,8 +2,6 @@ from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 import json
 from pathlib import Path
-import subprocess
-import sys
 from time import sleep
 from rich import print
 
@@ -138,9 +136,8 @@ def download(service, batch):
     elif isinstance(batch, int):
         document_id = get_document_id(batch)
         if document_id is None:
-            print(f"No document found for batch {batch}.")
-            outcome = "No document found"
-            return outcome
+            outcome = "Fail"
+            return outcome, None
         text = get_text(service, document_id).strip()
         while position < len(text):
             json_properties, position = decoder.raw_decode(text, position)

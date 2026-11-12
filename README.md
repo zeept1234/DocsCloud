@@ -4,7 +4,6 @@ DocsCloud is a tool used to store images, audio, video or really any file in goo
 ## Description
 DocsCloud utilises Google Docs as cloud storage, through encoding files into base85. Then, using Google Docs API, the files are sent in a json format to a document. This document's ID is saved, and can be accessed in the future.
 
-
 ## Getting Started
 ### Installation
 DocsCloud can be installed through one of two methods:
@@ -14,10 +13,11 @@ DocsCloud can be installed through one of two methods:
 ### Dependancies
 - Windows 11 (should work on windows 10 - not guaranteed)
 - Python 3.12+
-- Install requirements.txt (see creating a virtual environment)
+- Install requirements.txt (see creating a virtual environment and installing dependancies)
 - Google API and cloud account (see setting up google API)
+- Git (only if using ```git clone```) https://git-scm.com/install
 
-#### Creating a Virtual Environment
+#### Creating a Virtual Environment and installing dependancies
 1. Run ```python -m venv .venv``` to create a virtual environment named ".venv"
 2. Run ```.venv\Scripts\Activate.ps1``` to activate the virtual environment
 3. Run ```pip install -r requirements.txt``` to install the requirements for this project

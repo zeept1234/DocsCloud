@@ -51,10 +51,10 @@ def action():
             batch = download_get_batch()
             with Live(download_spinner, refresh_per_second=10, transient=True) as live:
                 finish_download = download_decode(batch)
-                if finish_download == "fail":
+                if finish_download == "Fail":
                     live.stop()
                     clear()
-                    print("[bold red]Invalid batch")
+                    print(f"[bold red]Invalid batch. No document found for batch {batch}.")
                     sleep(2)
                     action()
             clear()
@@ -148,4 +148,4 @@ def error_pad_action():
     
 
 if __name__ == "__main__":
-    error_pad_action()
+    action()
