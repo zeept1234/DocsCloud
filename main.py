@@ -41,10 +41,13 @@ def action():
         if keyboard.is_pressed("1"):
             keyboard.unhook_all()
             with Live(upload_spinner, refresh_per_second=10):
-                encode_upload()
+                outcome, message = encode_upload()
             clear()
-            with Live("[bold blue]Finished uploading!", console=console, refresh_per_second=10):
-                sleep(2)
+            if outcome == "Fail":
+                print(f"[bold red]One or more files were too large: {message}")
+            else:
+                with Live("[bold blue]Finished uploading!", console=console, refresh_per_second=10):
+                    sleep(2)
             action()
         elif keyboard.is_pressed("2"):
             keyboard.unhook_all()

@@ -38,8 +38,9 @@ def encode_upload():
     service = auth()
     batch = get_batch()
     document_id = get_document_id(batch)
-    upload(service, document_id)
+    outcome, message = upload(service, document_id)
     time.sleep(2)
+    return outcome, message
 
 def download_decode(batch):
     clear()

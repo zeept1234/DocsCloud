@@ -58,6 +58,7 @@ def upload(service, document_id):
     batch = get_batch()
 
     max_len = 1_000_000 #Sets max length
+    overflow = []
 
     for json_file in Path("file_properties").iterdir(): #Loops every json for upload
         if json_file.name == "README.md": #Ignores README.md
@@ -70,18 +71,30 @@ def upload(service, document_id):
         new_len = len(json_properties_string) #Checks length of json
  
         if new_len > max_len: #Checks if the json is too large
-            print(f"File {json_properties["name"]} is too large to upload.")
+            overflow.append(json_properties["name"])
+            continue
         elif doc_len + new_len > max_len: #Checks if the added json overflows the doc
             batch = batch + 1 #Creates a new batch and document to store json
             with open("batch/batch.json", "w") as file:
                 batch_dict = {"batch": batch}
                 json.dump(batch_dict, file, indent=4)
             document_id = create_doc(service, batch)
-            send_to_doc(service, document_id, json_properties_string)
-            json_file.unlink()
-        else: #Sends json to docs
-            send_to_doc(service, document_id, json_properties_string)  
-            json_file.unlink()
+            try:
+                send_to_doc(service, document_id, json_properties_string)
+            except:
+                return "Fail", "Failed to upload"
+            else:
+                json_file.unlink()
+        else: 
+            try:
+                send_to_doc(service, document_id, json_properties_string)  
+            except:
+                return "Fail", "Failed to upload"
+            else:
+                json_file.unlink()
+    if overflow != []:
+        return "Fail", overflow
+    return "Success", "Success"
 
 def get_length(service, document_id): #Gets document length
     document = service.documents().get(

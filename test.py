@@ -1,8 +1,2 @@
-import subprocess
-import keyboard
-
-
-
-def clear():
-    subprocess("cls")
-    return
+# ## Credits and Acknowledgements
+#This project was made by ZeepT, originally for PIXL, Hackclub. I used many Google API quickstart guides, along with the quickstart python template. I used the rich, pathlib, time, base64, subprocess, sys, msvcrt and keyboard python modules, thanks to the creators of these imports.
